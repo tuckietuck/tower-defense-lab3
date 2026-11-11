@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://q340s0kdh6qc"]
+
+[ext_resource type="PackedScene" path="res://Scenes/BasicTower.tscn" id="BasicTower"]
+[ext_resource type="PackedScene" path="res://Scenes/Core.tscn" id="Core"]
+[ext_resource type="PackedScene" path="res://Scenes/Crawler.tscn" id="Crawler"]
+[ext_resource type="PackedScene" path="res://Scenes/EnemyShooter.tscn" id="EnemyShooter"]
+[ext_resource type="Script" uid="uid://b6nny0qoj6p5s" path="res://Scripts/EnemySpawner.cs" id="EnemySpawner"]
+[ext_resource type="PackedScene" path="res://Scenes/ExplosiveTower.tscn" id="ExplosiveTower"]
+[ext_resource type="PackedScene" path="res://Scenes/FreezeTower.tscn" id="FreezeTower"]
+[ext_resource type="Script" uid="uid://b363a6u8qapje" path="res://Scripts/GameHud.cs" id="GameHud"]
+[ext_resource type="Script" uid="uid://c5a3rdcnw2qwh" path="res://Scripts/GameManager.cs" id="GameManager"]
+[ext_resource type="PackedScene" path="res://Scenes/Player.tscn" id="Player"]
+
+[sub_resource type="StandardMaterial3D" id="floor_material"]
+albedo_color = Color(0.15, 0.2, 0.23, 1)
+
+[sub_resource type="PlaneMesh" id="floor"]
+size = Vector2(40, 40)
+
+[sub_resource type="Environment" id="environment"]
+background_mode = 1
+background_color = Color(0.06, 0.08, 0.1, 1)
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.65
+
+[sub_resource type="StyleBoxFlat" id="panel"]
+bg_color = Color(0.03, 0.05, 0.07, 0.92)
+
+[node name="Level" type="Node3D" unique_id=152985146]
+script = ExtResource("GameManager")
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=1664503780]
+material_override = SubResource("floor_material")
+mesh = SubResource("floor")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=624012969]
+environment = SubResource("environment")
+
+[node name="Light" type="DirectionalLight3D" parent="." unique_id=1470190631]
+transform = Transform3D(0.90630776, 0.36599818, -0.21130912, 0, 0.49999997, 0.86602545, 0.42261827, -0.7848856, 0.45315385, 0, 0, 0)
+light_energy = 1.1
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=412943546]
+transform = Transform3D(1, 0, 0, 0, 0.42261824, 0.9063078, 0, -0.9063078, 0.42261824, 0, 34, 16)
+projection = 1
+current = true
+size = 49.0
+
+[node name="Core" parent="." unique_id=1719619040 instance=ExtResource("Core")]
+
+[node name="Player" parent="." unique_id=376969893 instance=ExtResource("Player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="BasicTower" parent="." unique_id=1774107190 instance=ExtResource("BasicTower")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+
+[node name="ExplosiveTower" parent="." unique_id=2000081165 instance=ExtResource("ExplosiveTower")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+
+[node name="FreezeTower" parent="." unique_id=810449802 instance=ExtResource("FreezeTower")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
+
+[node name="Crawler" parent="." unique_id=1823981868 instance=ExtResource("Crawler")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0, -14)
+
+[node name="EnemyShooter" parent="." unique_id=1092004195 instance=ExtResource("EnemyShooter")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, -14)
+
+[node name="EnemySpawner" type="Node" parent="." unique_id=14482454]
+script = ExtResource("EnemySpawner")
+CrawlerScene = ExtResource("Crawler")
+ShooterScene = ExtResource("EnemyShooter")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1425373041]
+script = ExtResource("GameHud")
+
+[node name="TopPanel" type="Panel" parent="HUD" unique_id=1670185107]
+offset_right = 1280.0
+offset_bottom = 48.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("panel")
+
+[node name="BottomPanel" type="Panel" parent="HUD" unique_id=1554308719]
+offset_top = 684.0
+offset_right = 1280.0
+offset_bottom = 800.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("panel")
+
+[node name="Status" type="Label" parent="HUD" unique_id=2004917893]
+offset_left = 18.0
+offset_top = 10.0
+theme_override_font_sizes/font_size = 20
+
+[node name="Help" type="Label" parent="HUD" unique_id=470358682]
+offset_left = 18.0
+offset_top = 696.0
+theme_override_font_sizes/font_size = 18
+
+[node name="Message" type="Label" parent="HUD" unique_id=1470672243]
+offset_left = 18.0
+offset_top = 54.0
+theme_override_colors/font_color = Color(1, 0.8, 0.2, 1)
+theme_override_font_sizes/font_size = 22
+
+[node name="Result" type="Label" parent="HUD" unique_id=976109828]
+offset_left = 160.0
+offset_top = 360.0
+theme_override_colors/font_color = Color(1, 0.4, 0.3, 1)
+theme_override_font_sizes/font_size = 28

@@ -1,0 +1,27 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://Scripts/ExplosionAreaComponent.cs" id="ExplosionAreaComponent"]
+[ext_resource type="Script" path="res://Scripts/LifetimeComponent.cs" id="LifetimeComponent"]
+
+[sub_resource type="SphereShape3D" id="shape"]
+radius = 3.5
+[sub_resource type="SphereMesh" id="mesh"]
+radius = 1.0
+height = 2.0
+[sub_resource type="StandardMaterial3D" id="material"]
+transparency = 1
+albedo_color = Color(0.65, 1, 0.15, 0.3)
+shading_mode = 0
+[node name="Explosion" type="Node3D"]
+[node name="Visual" type="MeshInstance3D" parent="."]
+mesh = SubResource("mesh")
+material_override = SubResource("material")
+[node name="DamagingComponent" type="Area3D" parent="."]
+script = ExtResource("ExplosionAreaComponent")
+collision_layer = 0
+collision_mask = 2
+OneShot = false
+HitInterval = 0.05
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DamagingComponent"]
+shape = SubResource("shape")
+[node name="LifetimeComponent" type="Node" parent="."]
+script = ExtResource("LifetimeComponent")

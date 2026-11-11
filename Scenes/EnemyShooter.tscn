@@ -1,0 +1,71 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://Scripts/HealthComponent.cs" id="HealthComponent"]
+[ext_resource type="Script" path="res://Scripts/VisibilityComponent.cs" id="VisibilityComponent"]
+[ext_resource type="Script" path="res://Scripts/MetalComponent.cs" id="MetalComponent"]
+[ext_resource type="Script" path="res://Scripts/ShootComponent.cs" id="ShootComponent"]
+[ext_resource type="Script" path="res://Scripts/MoveComponent.cs" id="MoveComponent"]
+[ext_resource type="PackedScene" path="res://Scenes/EnemyBullet.tscn" id="EnemyBullet"]
+
+[sub_resource type="CylinderShape3D" id="bodyshape"]
+radius = 0.65
+height = 2.0
+[sub_resource type="CylinderMesh" id="bodymesh"]
+top_radius = 0.45
+bottom_radius = 0.7
+height = 2.0
+[sub_resource type="StandardMaterial3D" id="bodymaterial"]
+albedo_color = Color(0.6, 0.08, 0.12, 1)
+[sub_resource type="BoxMesh" id="gunmesh"]
+size = Vector3(0.32, 0.35, 1.8)
+[sub_resource type="StandardMaterial3D" id="gunmaterial"]
+albedo_color = Color(1, 0.4, 0.35, 1)
+[sub_resource type="SphereShape3D" id="sight"]
+radius = 9
+
+[node name="EnemyShooter" type="CharacterBody3D" groups=["Enemies", "Enemies"]]
+collision_layer = 2
+collision_mask = 1
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 1, 0)
+shape = SubResource("bodyshape")
+[node name="TowerBaseVisual" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1, 0)
+mesh = SubResource("bodymesh")
+material_override = SubResource("bodymaterial")
+[node name="MuzzleVisual" type="Node3D" parent="."]
+position = Vector3(0, 1, 0)
+[node name="Gun" type="MeshInstance3D" parent="MuzzleVisual"]
+position = Vector3(0, 0, -0.7)
+mesh = SubResource("gunmesh")
+material_override = SubResource("gunmaterial")
+[node name="MuzzleMarker" type="Marker3D" parent="MuzzleVisual"]
+position = Vector3(0, 0, -1.8)
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("HealthComponent")
+MaxHealth = 14
+
+[node name="VisibilityComponent" type="Area3D" parent="."]
+script = ExtResource("VisibilityComponent")
+collision_layer = 0
+collision_mask = 1
+TargetGroup = "Allies"
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisibilityComponent"]
+shape = SubResource("sight")
+
+[node name="MetalComponent" type="Node" parent="."]
+script = ExtResource("MetalComponent")
+BuildCost = 30
+Reward = 18
+
+[node name="ShootComponent" type="Node" parent="."]
+script = ExtResource("ShootComponent")
+BulletScene = ExtResource("EnemyBullet")
+ShotInterval = 1.1
+PlayerControlled = false
+TargetGroup = "Allies"
+
+[node name="MoveComponent" type="Node" parent="."]
+script = ExtResource("MoveComponent")
+Speed = 1.8
+StopDistance = 6.5

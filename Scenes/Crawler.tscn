@@ -1,0 +1,71 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://Scripts/HealthComponent.cs" id="HealthComponent"]
+[ext_resource type="Script" path="res://Scripts/VisibilityComponent.cs" id="VisibilityComponent"]
+[ext_resource type="Script" path="res://Scripts/MetalComponent.cs" id="MetalComponent"]
+[ext_resource type="Script" path="res://Scripts/MoveComponent.cs" id="MoveComponent"]
+[ext_resource type="Script" path="res://Scripts/DamagingComponent.cs" id="DamagingComponent"]
+
+[sub_resource type="CylinderShape3D" id="bodyshape"]
+radius = 0.65
+height = 2.0
+[sub_resource type="BoxMesh" id="bodymesh"]
+size = Vector3(1.2, 0.65, 1.5)
+[sub_resource type="StandardMaterial3D" id="bodymaterial"]
+albedo_color = Color(0.85, 0.12, 0.1, 1)
+[sub_resource type="BoxMesh" id="gunmesh"]
+size = Vector3(0.32, 0.35, 1.8)
+[sub_resource type="StandardMaterial3D" id="gunmaterial"]
+albedo_color = Color(1, 0.4, 0.35, 1)
+[sub_resource type="SphereShape3D" id="sight"]
+radius = 9
+[sub_resource type="SphereShape3D" id="contact"]
+radius = 1.8
+
+[node name="Crawler" type="CharacterBody3D" groups=["Enemies", "Enemies"]]
+collision_layer = 2
+collision_mask = 1
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 1, 0)
+shape = SubResource("bodyshape")
+[node name="TowerBaseVisual" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1, 0)
+mesh = SubResource("bodymesh")
+material_override = SubResource("bodymaterial")
+[node name="MuzzleVisual" type="Node3D" parent="."]
+position = Vector3(0, 1, 0)
+[node name="MuzzleMarker" type="Marker3D" parent="MuzzleVisual"]
+position = Vector3(0, 0, -1.8)
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("HealthComponent")
+MaxHealth = 10
+
+[node name="VisibilityComponent" type="Area3D" parent="."]
+script = ExtResource("VisibilityComponent")
+collision_layer = 0
+collision_mask = 1
+TargetGroup = "Allies"
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisibilityComponent"]
+shape = SubResource("sight")
+
+[node name="MetalComponent" type="Node" parent="."]
+script = ExtResource("MetalComponent")
+BuildCost = 30
+Reward = 12
+
+[node name="MoveComponent" type="Node" parent="."]
+script = ExtResource("MoveComponent")
+Speed = 2.8
+StopDistance = 1.4
+
+[node name="DamagingComponent" type="Area3D" parent="."]
+script = ExtResource("DamagingComponent")
+collision_layer = 0
+collision_mask = 1
+TargetGroup = "Allies"
+OneShot = false
+Damage = 2
+HitInterval = 0.8
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DamagingComponent"]
+position = Vector3(0, 1, 0)
+shape = SubResource("contact")

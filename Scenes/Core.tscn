@@ -1,0 +1,33 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://Scripts/HealthComponent.cs" id="HealthComponent"]
+
+[sub_resource type="CylinderShape3D" id="bodyshape"]
+radius = 1.2
+height = 2.0
+[sub_resource type="BoxMesh" id="bodymesh"]
+size = Vector3(2.4, 2, 2.4)
+[sub_resource type="StandardMaterial3D" id="bodymaterial"]
+albedo_color = Color(0.3, 0.6, 1, 1)
+[sub_resource type="BoxMesh" id="gunmesh"]
+size = Vector3(0.32, 0.35, 1.8)
+[sub_resource type="StandardMaterial3D" id="gunmaterial"]
+albedo_color = Color(0.5, 1, 0.65, 1)
+[sub_resource type="SphereShape3D" id="sight"]
+radius = 11
+
+[node name="Core" type="StaticBody3D" groups=["Allies", "Core"]]
+collision_layer = 1
+collision_mask = 3
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 1, 0)
+shape = SubResource("bodyshape")
+[node name="TowerBaseVisual" type="MeshInstance3D" parent="."]
+position = Vector3(0, 1, 0)
+mesh = SubResource("bodymesh")
+material_override = SubResource("bodymaterial")
+[node name="MuzzleVisual" type="Node3D" parent="."]
+position = Vector3(0, 1, 0)
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("HealthComponent")
+MaxHealth = 80
